@@ -25,9 +25,7 @@ void	procces(t_data *data)
 {
 	// t_philo	*tmp;
 	t_philo	philo[MAX_PHILO];
-	pthread_mutex_t	forks[MAX_PHILO];
 
-	init_forks(&forks[1], data);
 	init_philo(&philo[1], data);
 	// tmp = &philo[1];
 	// while (tmp->id && tmp->id <= data->n_of_philo)

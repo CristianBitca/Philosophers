@@ -21,11 +21,12 @@ int	main(int argc, char **argv)
 		if (check_argv(argv))
 			data = init_data(argv);
 		if (check_data(data))
-			return(exit_proc(data, NULL));
+			return (exit_proc(data, NULL));
 		procces(data);
 	}
 	else
 		return (print_error(ERR_ARG_NUM));
-	exit_proc(data, "Done");
+	exit_proc(data, 0);
+	printf("Done\n");
 	return (EXIT_SUCCESS);
 }

@@ -32,13 +32,13 @@ int	check_argv(char **argv)
 
 int	check_data(t_data *data)
 {
-	if (data->n_of_philo > 200 || data->n_of_philo == 0)
+	if (data->n_philo > 200 || data->n_philo == 0)
 		return (print_error(ERR_ARG_WRG));
-	if (data->time_to_die <= 60)
+	if (data->time_die <= 60)
 		return (print_error(ERR_ARG_WRG));
-	if (data->time_to_eat <= 60)
+	if (data->time_eat <= 60)
 		return (print_error(ERR_ARG_WRG));
-	if (data->time_to_sleep <= 60)
+	if (data->time_sleep <= 60)
 		return (print_error(ERR_ARG_WRG));
 	return (0);
 }
