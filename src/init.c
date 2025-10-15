@@ -16,7 +16,8 @@ void	init_time(t_data *data)
 {
 	struct timeval	tv;
 
-	data->start = gettimeofday(&tv, NULL);
+	gettimeofday(&tv, NULL);
+	data->start = tv.tv_usec;
 }
 
 void	init_forks(t_data *data)
@@ -46,9 +47,9 @@ t_data	*init_data(char **argv)
 	init_time(data);
 	data->dead = 0;
 	init_forks(data);
-	pthread_mutex_init(&data->write, NULL);
+	pthread_mutex_init(&data->think, NULL);
 	pthread_mutex_init(&data->death, NULL);
-	pthread_mutex_init(&data->meal_check, NULL);
+	pthread_mutex_init(&data->eat, NULL);
 	return (data);
 }
 
@@ -61,7 +62,35 @@ void	init_philo(t_philo *philo, t_data *data)
 	{
 		philo->id = i;
 		philo->data = data;
+		philo->meals = 0;
+		philo->last_meal = 0;
+		if (philo->id == MAX_PHILO)
+			philo->r_fork = &data->forks[0];
+		else
+			philo->r_fork = &data->forks[i];
+		philo->l_fork = &data->forks[i - 1];
 		philo++;
 		i++;
 	}
+}
+
+int	init_thread(t_philo *philo, t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->n_philo)
+	{
+		if (pthread_create(&philo[i].thread, NULL, &routine, &philo[i]))
+			return(EXIT_FAILURE);
+		i++;
+	}
+	i = 0;
+	while (i < data->n_philo)
+	{
+		if (pthread_join(philo[i].thread, NULL))
+			return(EXIT_FAILURE);
+		i++;
+	}
+	return (EXIT_SUCCESS);
 }

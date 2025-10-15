@@ -36,9 +36,9 @@ typedef struct s_data
 	long			start;
 	int				dead;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	write;
+	pthread_mutex_t	think;
 	pthread_mutex_t	death;
-	pthread_mutex_t	meal_check;
+	pthread_mutex_t	eat;
 }	t_data;
 
 typedef struct s_philo
@@ -53,7 +53,8 @@ typedef struct s_philo
 }	t_philo;
 
 // procces
-void	procces(t_data *data);
+int	procces(t_data *data);
+void*	routine(void* arg);
 
 // Utilits
 int		ft_atoi(const char *nptr);
@@ -63,6 +64,7 @@ int		check_data(t_data *data);
 // Init
 t_data	*init_data(char **argv);
 void	init_philo(t_philo *philo, t_data *data);
+int	init_thread(t_philo *philo, t_data *data);
 
 // Exit
 int		print_error(char *error);
