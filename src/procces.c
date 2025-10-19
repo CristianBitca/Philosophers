@@ -12,30 +12,6 @@
 
 #include "../inc/philo.h"
 
-void	eat(t_philo *philo, t_data *data)
-{
-	pthread_mutex_lock(philo->l_fork);
-	pthread_mutex_lock(philo->r_fork);
-	printf("Philo nr %d is eating\n", philo->id);
-	usleep(data->time_eat * 1000);
-	pthread_mutex_unlock(philo->l_fork);
-	pthread_mutex_unlock(philo->r_fork);
-	printf("Philo nr %d is sleeping\n", philo->id);
-	usleep(data->time_sleep * 1000);
-}
-
-void	thinking(t_philo *philo)
-{
-	while (1)
-	{
-		printf("Philos nr %d is thinking\n", philo->id);
-		if (!philo->l_fork || !philo->r_fork)
-			usleep(1);
-		else
-			break;
-	}
-}
-
 void*	routine(void* arg)
 {
 	t_data	*data;
@@ -43,12 +19,17 @@ void*	routine(void* arg)
 
 	philo = (t_philo *)arg;
 	data = philo->data;
+	if (data->n_philo == 1)
+		usleep(data->time_die * 1000);
 	while (1)
 	{
-		if (philo->l_fork || philo->r_fork)
-			eat(philo, data);
+		if (check_forks(philo))
+		{
+			eatting(philo, data);
+			sleeping(philo, data);
+		}
 		else
-			thinking(philo);
+			thinking(philo, data);
 	}
 	pthread_exit(NULL);
 	(void)data;

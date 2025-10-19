@@ -12,14 +12,6 @@
 
 #include "../inc/philo.h"
 
-void	init_time(t_data *data)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	data->start = tv.tv_usec;
-}
-
 void	init_forks(t_data *data)
 {
 	pthread_mutex_t		forks[MAX_PHILO];
@@ -44,10 +36,10 @@ t_data	*init_data(char **argv)
 		data->n_time = ft_atoi(argv[5]);
 	else
 		data->n_time = -1;
-	init_time(data);
+	data->start = current_time();
 	data->dead = 0;
 	init_forks(data);
-	pthread_mutex_init(&data->think, NULL);
+	pthread_mutex_init(&data->write, NULL);
 	pthread_mutex_init(&data->death, NULL);
 	pthread_mutex_init(&data->eat, NULL);
 	return (data);

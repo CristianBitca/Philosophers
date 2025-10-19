@@ -12,6 +12,7 @@
 
 #include "../inc/philo.h"
 
+// Check given arguments if all of the are numbers.
 int	check_argv(char **argv)
 {
 	int	i;
@@ -30,6 +31,7 @@ int	check_argv(char **argv)
 	return (0);
 }
 
+// Check the struct data if all the number are not over the specified limits.
 int	check_data(t_data *data)
 {
 	if (data->n_philo > 200 || data->n_philo == 0)
@@ -43,6 +45,7 @@ int	check_data(t_data *data)
 	return (0);
 }
 
+// Converts string to int
 int	ft_atoi(const char *nptr)
 {
 	int	i;
@@ -67,4 +70,24 @@ int	ft_atoi(const char *nptr)
 		i++;
 	}
 	return (result * sign);
+}
+
+// Return current time.
+size_t	current_time(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+// Print a log line in the terminal.
+void	print_log(char *str, t_philo *philo, t_data *data)
+{
+	size_t	time;
+
+	time = current_time() - data->start;
+	pthread_mutex_lock(&data->write);
+	printf("%ld %d %s", time, philo->id, str);
+	pthread_mutex_unlock(&data->write);
 }

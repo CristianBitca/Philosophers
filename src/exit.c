@@ -12,6 +12,7 @@
 
 #include "../inc/philo.h"
 
+// Print an error.
 int	print_error(char *error)
 {
 	printf(ERROR);
@@ -19,6 +20,7 @@ int	print_error(char *error)
 	return (EXIT_FAILURE);
 }
 
+// Exit the procces and free all data, if the string error wasn't specifed doesn't execute print_error function.
 int	exit_proc(t_data *data, char *error)
 {
 	free(data);

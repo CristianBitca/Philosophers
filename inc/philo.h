@@ -26,6 +26,12 @@
 # define ERR_ARG_NUM "Wrong number of arguments.\n"
 # define ERR_ARG_WRG "The arguments contain, wrong value.\n"
 
+# define FORK "has taken a fork\n"
+# define EAT "is eating\n"
+# define SLEEP "is sleeping\n"
+# define THINK "is thinking\n"
+# define DEAD "died\n"
+
 typedef struct s_data
 {
 	int				n_philo;
@@ -36,7 +42,7 @@ typedef struct s_data
 	long			start;
 	int				dead;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	think;
+	pthread_mutex_t	write;
 	pthread_mutex_t	death;
 	pthread_mutex_t	eat;
 }	t_data;
@@ -56,10 +62,19 @@ typedef struct s_philo
 int	procces(t_data *data);
 void*	routine(void* arg);
 
+// philo
+int	check_forks(t_philo *philo);
+void	eatting(t_philo *philo, t_data *data);
+void	sleeping(t_philo *philo, t_data *data);
+void	thinking(t_philo *philo, t_data *data);
+
 // Utilits
 int		ft_atoi(const char *nptr);
 int		check_argv(char **argv);
 int		check_data(t_data *data);
+size_t	current_time(void);
+void	print_log(char *str, t_philo *philo, t_data *data);
+
 
 // Init
 t_data	*init_data(char **argv);
