@@ -16,17 +16,19 @@
 int	check_argv(char **argv)
 {
 	int	i;
+	int	j;
 
-	while (*argv)
+	j = 0;
+	while (argv[j])
 	{
 		i = 0;
-		while (*argv[i])
+		while (argv[j][i])
 		{
-			if ('0' <= *argv[i] && '9' >= *argv[i])
-				return (1);
+			if ('0' >= argv[j][i] && '9' <= argv[j][i])
+				return (exit_proc(NULL, ERR_ARG_WRG));
 			i++;
 		}
-		argv++;
+		j++;
 	}
 	return (0);
 }
@@ -34,7 +36,7 @@ int	check_argv(char **argv)
 // Check the struct data if all the number are not over the specified limits.
 int	check_data(t_data *data)
 {
-	if (data->n_philo > 200 || data->n_philo == 0)
+	if (data->n_philo > 200 || data->n_philo <= 0)
 		return (print_error(ERR_ARG_WRG));
 	if (data->time_die <= 60)
 		return (print_error(ERR_ARG_WRG));
@@ -73,7 +75,7 @@ int	ft_atoi(const char *nptr)
 }
 
 // Return current time.
-size_t	current_time(void)
+long	current_time(void)
 {
 	struct timeval	tv;
 
@@ -84,7 +86,7 @@ size_t	current_time(void)
 // Print a log line in the terminal.
 void	print_log(char *str, t_philo *philo, t_data *data)
 {
-	size_t	time;
+	long	time;
 
 	time = current_time() - data->start;
 	pthread_mutex_lock(&data->write);

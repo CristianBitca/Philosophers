@@ -13,6 +13,7 @@ SRC    = main.c \
 		  utilits.c \
 		  exit.c \
 		  init.c \
+		  monitor.c \
 
 SRCS = $(addprefix $(SRC_DIR), $(SRC))
 

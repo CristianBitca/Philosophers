@@ -12,6 +12,15 @@
 
 #include "../inc/philo.h"
 
+void	smart_usleep(long ms, t_philo *philo, t_data *data)
+{
+	long int	start;
+
+	start = current_time();
+	while (current_time() - start < ms && check_dead(philo, data))
+		usleep(500);
+}
+
 int	check_forks(t_philo *philo)
 {
 	if (!philo->l_fork->__data.__lock && !philo->r_fork->__data.__lock)
@@ -27,21 +36,25 @@ void	eatting(t_philo *philo, t_data *data)
 	print_log(FORK, philo, data);
 	philo->meals++;
 	philo->last_meal = current_time();
+	pthread_mutex_unlock(&data->eat);
 	print_log(EAT, philo, data);
-	usleep(data->time_eat * 1000);
+	smart_usleep(data->time_eat, philo, data);
 	pthread_mutex_unlock(philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);
 }
 
 void	sleeping(t_philo *philo, t_data *data)
 {
+	if (!check_dead(philo, data))
+		return ;
 	print_log(SLEEP, philo, data);
-	usleep(data->time_sleep * 1000);
+	smart_usleep(data->time_sleep, philo, data);
 }
 
 void	thinking(t_philo *philo, t_data *data)
 {
+	if (!check_dead(philo, data))
+		return ;
 	print_log(THINK, philo, data);
-	while (!check_forks(philo))
-		usleep(1);
+
 }

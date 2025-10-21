@@ -16,10 +16,13 @@ int	main(int argc, char **argv)
 {
 	t_data	*data;
 
+	data = malloc(sizeof(t_data));
 	if (argc == 5 || argc == 6)
 	{
-		if (check_argv(argv))
-			data = init_data(argv);
+		if (check_argv(&argv[1]))
+			return (exit_proc(NULL, NULL));
+		if (init_data(argv, data))
+			return (exit_proc(NULL, NULL));
 		if (check_data(data))
 			return (exit_proc(data, NULL));
 		if (procces(data))

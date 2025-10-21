@@ -12,4 +12,48 @@
 
 #include "philo.h"
 
+int	check_meals(t_philo *philo, t_data *data)
+{
+	if (philo->meals == data->n_time)
+	{
+		pthread_mutex_lock(&data->death);
+		data->dead = 1;
+		pthread_mutex_unlock(&data->death);
+		return (0);
+	}
+	return (1);
+}
 
+int	check_dead(t_philo *philo, t_data *data)
+{
+	if (data->dead == 1)
+		return (0);
+	return (1);
+	(void)philo;
+}
+
+void	monitor(t_philo *philo, t_data *data)
+{
+	int	i;
+
+	if (data->n_philo <= 1)
+	{
+		print_log(DEAD, philo, data);
+		data->dead = 1;
+	}
+	while (!data->dead)
+	{
+		i = 0;
+		while (i <= data->n_philo && !data->dead)
+		{
+			if ((current_time() - philo[i].last_meal) >= data->time_die
+				&& philo[i].last_meal)
+			{
+				print_log(DEAD, philo, data);
+				data->dead = 1;
+			}
+			i++;
+		}
+		usleep(1000);
+	}
+}

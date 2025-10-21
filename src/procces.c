@@ -12,27 +12,24 @@
 
 #include "../inc/philo.h"
 
-void*	routine(void* arg)
+void	*routine(void *arg)
 {
 	t_data	*data;
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
 	data = philo->data;
-	if (data->n_philo == 1)
-		usleep(data->time_die * 1000);
-	while (1)
+	if (data->n_philo <= 1)
+		usleep(data->time_die);
+	if (data->n_philo % 2 == 0)
+		usleep(1);
+	while (check_meals(philo, data) && check_dead(philo, data))
 	{
-		if (check_forks(philo))
-		{
-			eatting(philo, data);
-			sleeping(philo, data);
-		}
-		else
-			thinking(philo, data);
+		eatting(philo, data);
+		sleeping(philo, data);
+		thinking(philo, data);
 	}
 	pthread_exit(NULL);
-	(void)data;
 }
 
 int	procces(t_data *data)

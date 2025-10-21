@@ -22,10 +22,12 @@
 
 # define MAX_PHILO 200
 
+// Error message.
 # define ERROR "Error\n"
 # define ERR_ARG_NUM "Wrong number of arguments.\n"
 # define ERR_ARG_WRG "The arguments contain, wrong value.\n"
 
+// Log message.
 # define FORK "has taken a fork\n"
 # define EAT "is eating\n"
 # define SLEEP "is sleeping\n"
@@ -63,21 +65,27 @@ int	procces(t_data *data);
 void*	routine(void* arg);
 
 // philo
+void	smart_usleep(long ms, t_philo *philo, t_data *data);
 int	check_forks(t_philo *philo);
 void	eatting(t_philo *philo, t_data *data);
 void	sleeping(t_philo *philo, t_data *data);
 void	thinking(t_philo *philo, t_data *data);
 
+// monitor
+void	monitor(t_philo *philo, t_data *data);
+int	check_meals(t_philo *philo, t_data *data);
+int	check_dead(t_philo *philo, t_data *data);
+
 // Utilits
 int		ft_atoi(const char *nptr);
 int		check_argv(char **argv);
 int		check_data(t_data *data);
-size_t	current_time(void);
+long	current_time(void);
 void	print_log(char *str, t_philo *philo, t_data *data);
 
 
 // Init
-t_data	*init_data(char **argv);
+int	init_data(char **argv, t_data *data);
 void	init_philo(t_philo *philo, t_data *data);
 int	init_thread(t_philo *philo, t_data *data);
 
