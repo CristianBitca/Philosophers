@@ -36,7 +36,7 @@ int	check_argv(char **argv)
 // Check the struct data if all the number are not over the specified limits.
 int	check_data(t_data *data)
 {
-	if (data->n_philo > 200 || data->n_philo <= 0)
+	if (data->n_philo < 200 && data->n_philo <= 0)
 		return (print_error(ERR_ARG_WRG));
 	if (data->time_die <= 60)
 		return (print_error(ERR_ARG_WRG));

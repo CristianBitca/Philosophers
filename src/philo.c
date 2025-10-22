@@ -21,22 +21,21 @@ void	smart_usleep(long ms, t_philo *philo, t_data *data)
 		usleep(500);
 }
 
-int	check_forks(t_philo *philo)
-{
-	if (!philo->l_fork->__data.__lock && !philo->r_fork->__data.__lock)
-		return (1);
-	return (0);	
-}
-
 void	eatting(t_philo *philo, t_data *data)
 {
 	pthread_mutex_lock(philo->l_fork);
+	if (!check_dead(philo, data))
+		return ;
 	print_log(FORK, philo, data);
 	pthread_mutex_lock(philo->r_fork);
+	if (!check_dead(philo, data))
+		return ;
 	print_log(FORK, philo, data);
 	philo->meals++;
 	philo->last_meal = current_time();
 	pthread_mutex_unlock(&data->eat);
+	if (!check_dead(philo, data))
+		return ;
 	print_log(EAT, philo, data);
 	smart_usleep(data->time_eat, philo, data);
 	pthread_mutex_unlock(philo->l_fork);

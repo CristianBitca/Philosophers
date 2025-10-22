@@ -14,14 +14,13 @@
 
 void	init_forks(t_data *data)
 {
-	pthread_mutex_t		forks[MAX_PHILO];
 	int					i;
 
 	i = 0;
-	data->forks = forks;
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->n_philo);
 	while (i < data->n_philo)
 	{
-		pthread_mutex_init(&forks[i], NULL);
+		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
 	}
 }
@@ -33,16 +32,10 @@ int	init_data(char **argv, t_data *data)
 	data->time_eat = ft_atoi(argv[3]);
 	data->time_sleep = ft_atoi(argv[4]);
 	if (argv[5])
-	{
 		data->n_time = ft_atoi(argv[5]);
-		if (data->n_time < 0)
-			return (exit_proc(data, ERR_ARG_WRG));
-	}
-	else
-		data->n_time = -1;
+	init_forks(data);
 	data->start = current_time();
 	data->dead = 0;
-	init_forks(data);
 	pthread_mutex_init(&data->write, NULL);
 	pthread_mutex_init(&data->death, NULL);
 	pthread_mutex_init(&data->eat, NULL);

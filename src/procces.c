@@ -22,7 +22,7 @@ void	*routine(void *arg)
 	if (data->n_philo <= 1)
 		usleep(data->time_die);
 	if (data->n_philo % 2 == 0)
-		usleep(1);
+		thinking(philo, data);
 	while (check_meals(philo, data) && check_dead(philo, data))
 	{
 		eatting(philo, data);

@@ -26,10 +26,18 @@ int	check_meals(t_philo *philo, t_data *data)
 
 int	check_dead(t_philo *philo, t_data *data)
 {
+	pthread_mutex_lock(&data->death);
 	if (data->dead == 1)
+	{
+		pthread_mutex_unlock(&data->death);
+		pthread_mutex_unlock(&data->write);
+		pthread_mutex_unlock(&data->eat);
+		pthread_mutex_unlock(philo->l_fork);
+		pthread_mutex_unlock(philo->r_fork);
 		return (0);
+	}
+	pthread_mutex_unlock(&data->death);
 	return (1);
-	(void)philo;
 }
 
 void	monitor(t_philo *philo, t_data *data)
@@ -44,7 +52,7 @@ void	monitor(t_philo *philo, t_data *data)
 	while (!data->dead)
 	{
 		i = 0;
-		while (i <= data->n_philo && !data->dead)
+		while (i < data->n_philo && !data->dead)
 		{
 			if ((current_time() - philo[i].last_meal) >= data->time_die
 				&& philo[i].last_meal)
