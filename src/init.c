@@ -32,8 +32,15 @@ int	init_data(char **argv, t_data *data)
 	data->time_eat = ft_atoi(argv[3]);
 	data->time_sleep = ft_atoi(argv[4]);
 	if (argv[5])
+	{
 		data->n_time = ft_atoi(argv[5]);
-	init_forks(data);
+		if (data->n_time)
+			data->flag_n_time = 0;
+		else
+			data->flag_n_time = 1;
+	}
+	if (data->n_philo > 0)
+		init_forks(data);
 	data->start = current_time();
 	data->dead = 0;
 	pthread_mutex_init(&data->write, NULL);

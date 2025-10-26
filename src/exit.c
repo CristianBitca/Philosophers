@@ -12,6 +12,19 @@
 
 #include "../inc/philo.h"
 
+void	free_forks(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->n_philo)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		i++;
+	}
+	free(data->forks);
+}
+
 // Print an error.
 int	print_error(char *error)
 {
@@ -24,7 +37,7 @@ int	print_error(char *error)
 int	exit_proc(t_data *data, char *error)
 {
 	if (!data->forks)
-		free(data->forks);
+		free_forks(data);
 	free(data);
 	if (error)
 		print_error(error);
