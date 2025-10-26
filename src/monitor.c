@@ -57,7 +57,8 @@ void	monitor(t_philo *philo, t_data *data)
 			if ((current_time() - philo[i].last_meal) >= data->time_die
 				&& philo[i].last_meal)
 			{
-				print_log(DEAD, philo, data);
+				if (philo[i].meals != data->n_time)
+					print_log(DEAD, philo, data);
 				data->dead = 1;
 			}
 			i++;

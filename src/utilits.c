@@ -12,25 +12,34 @@
 
 #include "../inc/philo.h"
 
+int	ft_isdigit(int c)
+{
+	if ('0' <= c && '9' >= c)
+		return (1);
+	return (0);
+}
+
 // Check given arguments if all of the are numbers.
-int	check_argv(char **argv)
+int	check_argv(int argc, char **argv)
 {
 	int	i;
 	int	j;
 
 	j = 0;
+	if (argc < 5 || argc > 6)
+		return (print_error(ERR_ARG_NUM));
 	while (argv[j])
 	{
 		i = 0;
 		while (argv[j][i])
 		{
-			if ('0' >= argv[j][i] && '9' <= argv[j][i])
-				return (exit_proc(NULL, ERR_ARG_WRG));
+			if (!ft_isdigit(argv[j][i]) && argv[j][i] != '-')
+				return (print_error(ERR_ARG_DIGIT));
 			i++;
 		}
 		j++;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 // Check the struct data if all the number are not over the specified limits.
@@ -44,6 +53,8 @@ int	check_data(t_data *data)
 		return (print_error(ERR_ARG_WRG));
 	if (data->time_sleep <= 60)
 		return (print_error(ERR_ARG_WRG));
+	if (data->n_time < 0 && !data->flag_n_time)
+		return(print_error(ERR_ARG_WRG));
 	return (0);
 }
 
@@ -81,15 +92,4 @@ long	current_time(void)
 
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
-}
-
-// Print a log line in the terminal.
-void	print_log(char *str, t_philo *philo, t_data *data)
-{
-	long	time;
-
-	time = current_time() - data->start;
-	pthread_mutex_lock(&data->write);
-	printf("%ld %d %s", time, philo->id, str);
-	pthread_mutex_unlock(&data->write);
 }

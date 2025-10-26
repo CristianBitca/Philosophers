@@ -19,9 +19,9 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	data = philo->data;
-	if (data->n_philo <= 1)
+	if (data->n_philo == 1)
 		usleep(data->time_die);
-	if (data->n_philo % 2 == 0)
+	if (philo->id % 2 == 0)
 		thinking(philo, data);
 	while (check_meals(philo, data) && check_dead(philo, data))
 	{
@@ -29,7 +29,8 @@ void	*routine(void *arg)
 		sleeping(philo, data);
 		thinking(philo, data);
 	}
-	pthread_exit(NULL);
+	pthread_detach(philo->thread);
+	return 0;
 }
 
 int	procces(t_data *data)

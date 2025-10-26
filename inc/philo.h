@@ -26,6 +26,7 @@
 # define ERROR "Error\n"
 # define ERR_ARG_NUM "Wrong number of arguments.\n"
 # define ERR_ARG_WRG "The arguments contain, wrong value.\n"
+# define ERR_ARG_DIGIT "The arguments contain a non digit character\n"
 
 // Log message.
 # define FORK "has taken a fork\n"
@@ -79,7 +80,8 @@ int	check_dead(t_philo *philo, t_data *data);
 
 // Utilits
 int		ft_atoi(const char *nptr);
-int		check_argv(char **argv);
+int	ft_isdigit(int c);
+int		check_argv(int argc, char **argv);
 int		check_data(t_data *data);
 long	current_time(void);
 void	print_log(char *str, t_philo *philo, t_data *data);
@@ -93,5 +95,6 @@ int	init_thread(t_philo *philo, t_data *data);
 // Exit
 int		print_error(char *error);
 int		exit_proc(t_data *data, char *error);
+void	free_forks(t_data *data);
 
 #endif

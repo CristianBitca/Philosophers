@@ -36,8 +36,6 @@ int	print_error(char *error)
 // Exit the procces and free all data, if the string error wasn't specifed doesn't execute print_error function.
 int	exit_proc(t_data *data, char *error)
 {
-	if (!data->forks)
-		free_forks(data);
 	free(data);
 	if (error)
 		print_error(error);

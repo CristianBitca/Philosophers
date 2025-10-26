@@ -17,19 +17,13 @@ int	main(int argc, char **argv)
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
-	if (argc == 5 || argc == 6)
-	{
-		if (check_argv(&argv[1]))
-			return (exit_proc(NULL, NULL));
-		else if (init_data(argv, data))
-			return (exit_proc(NULL, NULL));
-		else if (check_data(data))
-			return (exit_proc(data, NULL));
-		else if (procces(data))
-			return(exit_proc(data, NULL));
-	}
-	else
-		return (print_error(ERR_ARG_NUM));
-	exit_proc(data, NULL);
+	if (check_argv(argc, &argv[1]))
+		return (free(data), EXIT_FAILURE);
+	else if (init_data(argv, data))
+		return (exit_proc(data, NULL));
+	else if (procces(data))
+		return(free_forks(data), exit_proc(data, NULL));
+	free_forks(data);
+	free(data);
 	return (EXIT_SUCCESS);
 }

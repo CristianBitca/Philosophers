@@ -18,7 +18,7 @@ void	init_forks(t_data *data)
 
 	i = 0;
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->n_philo);
-	while (i < data->n_philo)
+	while (i <= data->n_philo)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
@@ -39,8 +39,9 @@ int	init_data(char **argv, t_data *data)
 		else
 			data->flag_n_time = 1;
 	}
-	if (data->n_philo > 0)
-		init_forks(data);
+	if (check_data(data))
+		return (EXIT_FAILURE);
+	init_forks(data);
 	data->start = current_time();
 	data->dead = 0;
 	pthread_mutex_init(&data->write, NULL);
